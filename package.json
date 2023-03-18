@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "visitor": "ts-node visitor/main.ts",
+    "template-method": "ts-node template-method/main.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
