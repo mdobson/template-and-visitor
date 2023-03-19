@@ -6,7 +6,7 @@ enum TokenType {
 
 interface DobsyNode {
   tokenType: TokenType;
-  accept(visitor: Visitor): number;
+  accept<T>(visitor: Visitor<T>): T;
 }
 
 class PlusNode implements DobsyNode {
@@ -19,7 +19,7 @@ class PlusNode implements DobsyNode {
     this.right = right;
   }
 
-  accept(visitor: Visitor): number {
+  accept<T>(visitor: Visitor<T>): T {
     return visitor.visitPlus(this);
   }
 }
@@ -32,25 +32,33 @@ class NumberNode implements DobsyNode {
     this.value = value;
   }
 
-  accept(visitor: Visitor): number {
+  accept<T>(visitor: Visitor<T>): T {
     return visitor.visitNumber(this);
   }
 }
 
-interface Visitor {
-  visitNumber(node: NumberNode): number;
-  visitPlus(node: PlusNode): number;
+interface Visitor<T> {
+  visitNumber(node: NumberNode): T;
+  visitPlus(node: PlusNode): T;
 }
 
-class DobsyVisitor implements Visitor {
+class DobsyVisitor implements Visitor<number> {
   visitNumber(node: NumberNode): number {
-    console.log("NumberNode", node.value);
     return node.value;
   }
 
   visitPlus(node: PlusNode): number {
-    console.log("PlusNode");
     return node.left.accept(this) + node.right.accept(this);
+  }
+}
+
+class PrintVisitor implements Visitor<string> {
+  visitNumber(node: NumberNode): string {
+    return node.value.toString();
+  }
+
+  visitPlus(node: PlusNode): string {
+    return "(" + node.left.accept(this) + "+" + node.right.accept(this) + ")";
   }
 }
 
@@ -79,3 +87,4 @@ for (let i = 0; i < tokens.length; i++) {
 }
 
 console.log(`final value of program ${prevToken!.accept(new DobsyVisitor())}`);
+console.log(`final value of program ${prevToken!.accept(new PrintVisitor())}`);
