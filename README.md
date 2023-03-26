@@ -1,4 +1,4 @@
-#Template Method and Visitor Patterns
+# Template Method and Visitor Patterns
 
 This repo gives a small taste of what you can do with the template method pattern and the visitor pattern.
 
